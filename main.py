@@ -35,6 +35,7 @@ async def register_user():
     password = data.get("password")
 
     if not username or not email or not password:
+        print("Missing required fields")
         return flask.jsonify({"error": "Missing required fields"}), 400
 
     async with aiosqlite.connect('database.db') as db:
@@ -42,6 +43,7 @@ async def register_user():
         existing_user = await cursor.fetchone()
 
         if existing_user:
+            print("User with that username or email already exists")
             return flask.jsonify({"error": "Username or email already exists"}), 400
 
         ph = argon2.PasswordHasher()
@@ -57,6 +59,7 @@ async def register_user():
 @app.route("/user/login", methods=["POST"])
 async def login_user():
     data = flask.request.get_json()
+    print(data)
     username = data.get("username")
     password = data.get("password")
 
@@ -279,3 +282,33 @@ async def complete_act(act_id):
     return flask.jsonify({"message": "Act marked as completed"})
 
 
+@app.route("/user/profile", methods=["GET"])
+async def user_profile():
+    auth_header = flask.request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return flask.jsonify({"error": "Missing or invalid token"}), 401
+
+    token = auth_header.split(" ", 1)[1]
+    try:
+        payload = jwt.decode(token, app.secret_key, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        return flask.jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return flask.jsonify({"error": "Invalid token"}), 401
+
+    user_id = payload["user_id"]
+
+    async with aiosqlite.connect('database.db') as db:
+        cursor = await db.execute("SELECT username, email, waffle FROM users WHERE id = ?", (user_id,))
+        user = await cursor.fetchone()
+
+        if not user:
+            return flask.jsonify({"error": "User not found"}), 404
+
+        username, email, waffle = user
+
+    return flask.jsonify({
+        "username": username,
+        "email": email,
+        "waffle": waffle
+    })
