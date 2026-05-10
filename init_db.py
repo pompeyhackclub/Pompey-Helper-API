@@ -1,14 +1,14 @@
 import aiosqlite
 
 _SEED_MERCH = [
-    ("Waffle Iron Tee",          12, "GridLock Apparel",      "merch/waffle_iron_tee.jpg"),
-    ("Crispy Corner Cap",         8, "WaffleWear Co.",        "merch/CrispyCornerCap.jpg"),
-    ("Syrup Smuggler Flask",     15, "The Syrup Collective",  "merch/SyrupSmugglerFlask.jpg"),
-    ("Belgian Bloc Hoodie",      25, "GridLock Apparel",      "merch/BelgianBlockHoodie.png"),
-    ("Grid Life Socks",           5, "WaffleWear Co.",        "merch/GridLifeSocks.png"),
-    ("Waffle Whisperer Apron",   10, "The Syrup Collective",  "merch/WaffleWhisperer.png"),
-    ("Pompey Waffle Enamel Pin",  3, "Pompey Pins Ltd.",      "merch/PortsPin.jpg"),
-    ("Golden Square Mug",         7, "Pompey Pins Ltd.",      "merch/golden_square_mug.jpg"),
+    ("Waffle Iron Tee",          12, "GridLock Apparel",      "media/waffle_iron_tee.jpg"),
+    ("Crispy Corner Cap",         8, "WaffleWear Co.",        "media/CrispyCornerCap.jpg"),
+    ("Syrup Smuggler Flask",     15, "The Syrup Collective",  "media/SyrupSmugglerFlask.jpg"),
+    ("Belgian Bloc Hoodie",      25, "GridLock Apparel",      "media/BelgianBlockHoodie.png"),
+    ("Grid Life Socks",           5, "WaffleWear Co.",        "media/GridLifeSocks.png"),
+    ("Waffle Whisperer Apron",   10, "The Syrup Collective",  "media/wafflerWhisperer.png"),
+    ("Pompey Waffle Enamel Pin",  3, "Pompey Pins Ltd.",      "media/PortsPin.jpg"),
+    ("Golden Square Mug",         7, "Pompey Pins Ltd.",      "media/GoldenSquareMug.png"),
 ]
 
 async def init_db():

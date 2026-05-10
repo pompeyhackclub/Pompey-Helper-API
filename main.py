@@ -7,6 +7,8 @@ import jwt
 import datetime
 import aiosqlite
 from uuid import uuid4
+import base64
+import os
 
 app = flask.Flask(__name__)
 app.secret_key = "fuhufiuafiuhefewofhefuhwef"
@@ -200,8 +202,15 @@ async def list_merch():
         cursor = await db.execute("SELECT name, waffles, provider, img FROM Merch")
         rows = await cursor.fetchall()
 
+    def encode_img(path):
+        full_path = os.path.join(app.static_folder, path)
+        if not os.path.exists(full_path):
+            return None
+        with open(full_path, "rb") as f:
+            return base64.b64encode(f.read()).decode("utf-8")
+
     return flask.jsonify([
-        {"name": r[0], "waffles": r[1], "provider": r[2], "img": r[3]}
+        {"name": r[0], "waffles": r[1], "provider": r[2], "img": encode_img(r[3])}
         for r in rows
     ])
 

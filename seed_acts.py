@@ -4,23 +4,23 @@ import argon2
 from uuid import uuid4
 
 _SEED_USERS = [
-    ("wafflelord",   "wafflelord@pompey.com",   "password123"),
-    ("syrup_queen",  "syrupqueen@pompey.com",   "password123"),
-    ("gridmaster",   "gridmaster@pompey.com",   "password123"),
+    ("wafflelord2",   "wafflelord2@pompey.com",   "password123"),
+    ("syrup_queen2",  "syrupqueen2@pompey.com",   "password123"),
+    ("gridmaster2",   "gridmaster2@pompey.com",   "password123"),
 ]
 
 _SEED_ACTS = [
-    # (username,      location,              category,       item,                          completed, claimedByUsername)
-    ("wafflelord",  "Albert Road",         "Food",         "Share a waffle with a stranger",   False,  None),
-    ("wafflelord",  "Southsea Common",     "Community",    "Pick up litter for 10 minutes",    True,   "syrup_queen"),
-    ("wafflelord",  "Fratton Park",        "Sport",        "Teach someone to juggle",          False,  "gridmaster"),
-    ("syrup_queen", "Gunwharf Quays",      "Food",         "Buy a coffee for the next person",  True,   "gridmaster"),
-    ("syrup_queen", "Old Portsmouth",      "Arts",         "Chalk a nice message on the path", False,  None),
-    ("syrup_queen", "Victoria Park",       "Community",    "Water the public flower beds",     False,  "wafflelord"),
-    ("gridmaster",  "Palmerston Road",     "Food",         "Hand out free waffle samples",     True,   "wafflelord"),
-    ("gridmaster",  "Clarence Pier",       "Fun",          "Give someone a go on your token",  False,  None),
-    ("gridmaster",  "Portsmouth Library",  "Education",    "Read to a kid for 15 minutes",     False,  "syrup_queen"),
-    ("wafflelord",  "Eastney Beach",       "Environment",  "Build a bird feeder from scrap",   False,  None),
+    # (username,      location,                                    category,       item,                               completed, claimedByUsername)
+    ("wafflelord",  {"lat": "50.8013", "lng": "-1.1106"},         "Food",         "Share a waffle with a stranger",   False,  None),           # Historic Dockyard
+    ("wafflelord",  {"lat": "50.8477", "lng": "-1.0645"},         "Community",    "Pick up litter for 10 minutes",    True,   "syrup_queen"),   # Cosham
+    ("wafflelord",  {"lat": "50.8337", "lng": "-1.0725"},         "Sport",        "Teach someone to juggle",          False,  "gridmaster"),    # Hilsea
+    ("syrup_queen", {"lat": "50.8156", "lng": "-1.0756"},         "Food",         "Buy a coffee for the next person", True,   "gridmaster"),    # North End
+    ("syrup_queen", {"lat": "50.7793", "lng": "-1.0849"},         "Arts",         "Chalk a nice message on the path", False,  None),            # Southsea Castle
+    ("syrup_queen", {"lat": "50.8087", "lng": "-1.0806"},         "Community",    "Water the public flower beds",     False,  "wafflelord"),    # Buckland
+    ("gridmaster",  {"lat": "50.8145", "lng": "-1.0589"},         "Food",         "Hand out free waffle samples",     True,   "wafflelord"),    # Copnor
+    ("gridmaster",  {"lat": "50.8410", "lng": "-1.0456"},         "Fun",          "Give someone a go on your token",  False,  None),            # Drayton
+    ("gridmaster",  {"lat": "50.8456", "lng": "-1.0312"},         "Education",    "Read to a kid for 15 minutes",     False,  "syrup_queen"),   # Farlington
+    ("wafflelord",  {"lat": "50.7955", "lng": "-1.1016"},         "Environment",  "Build a bird feeder from scrap",   False,  None),            # Portsmouth Cathedral
 ]
 
 async def seed():
