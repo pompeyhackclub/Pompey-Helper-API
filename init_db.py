@@ -9,7 +9,7 @@ async def init_db():
                 username TEXT NOT NULL UNIQUE,
                 email TEXT NOT NULL UNIQUE,
                 passwordHash TEXT NOT NULL,
-                RewardPoints INTEGER NOT NULL DEFAULT 0
+                waffle INTEGER NOT NULL DEFAULT 0
             )
         ''')
 
@@ -26,7 +26,7 @@ async def init_db():
         ''')
         await db.commit()
 
-        
+
 
 if __name__ == '__main__':
     import asyncio
