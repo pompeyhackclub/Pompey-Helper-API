@@ -1,5 +1,6 @@
 import flask
 from flask import url_for
+from flask_cors import CORS
 import random
 import argon2
 import jwt
@@ -9,6 +10,7 @@ from uuid import uuid4
 
 app = flask.Flask(__name__)
 app.secret_key = "fuhufiuafiuhefewofhefuhwef"
+CORS(app)
 
 def has_no_empty_params(rule):
     defaults = rule.defaults or {}
@@ -27,6 +29,7 @@ def site_map():
 @app.route("/user/register", methods=["POST"])
 async def register_user():
     data = flask.request.get_json()
+    print(data)
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
@@ -87,6 +90,26 @@ async def login_user():
 @app.route("/user/logout")
 def logout_user():
     pass
+
+@app.route("/acts", methods=["GET"])
+async def list_acts():
+    async with aiosqlite.connect('database.db') as db:
+        cursor = await db.execute("SELECT id, userId, location, category, item, claimedBy, completed FROM Acts")
+        rows = await cursor.fetchall()
+
+    return flask.jsonify([
+        {
+            "id": r[0],
+            "userId": r[1],
+            "location": r[2],
+            "category": r[3],
+            "item": r[4],
+            "claimedBy": r[5],
+            "completed": bool(r[6])
+        }
+        for r in rows
+    ])
+
 
 @app.route("/acts/register", methods=["POST"])
 async def register_act():
@@ -168,6 +191,57 @@ async def claim_act(act_id):
 
     return flask.jsonify({"message": "Act claimed successfully"})
 
+@app.route("/merch", methods=["GET"])
+async def list_merch():
+    async with aiosqlite.connect('database.db') as db:
+        cursor = await db.execute("SELECT name, waffles, provider, img FROM Merch")
+        rows = await cursor.fetchall()
+
+    return flask.jsonify([
+        {"name": r[0], "waffles": r[1], "provider": r[2], "img": r[3]}
+        for r in rows
+    ])
+
+
+@app.route("/merch/register", methods=["POST"])
+async def register_merch():
+    auth_header = flask.request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return flask.jsonify({"error": "Missing or invalid token"}), 401
+
+    token = auth_header.split(" ", 1)[1]
+    try:
+        payload = jwt.decode(token, app.secret_key, algorithms=["HS256"])
+    except jwt.ExpiredSignatureError:
+        return flask.jsonify({"error": "Token expired"}), 401
+    except jwt.InvalidTokenError:
+        return flask.jsonify({"error": "Invalid token"}), 401
+
+    data = flask.request.get_json()
+    name     = data.get("name")
+    waffles  = data.get("waffles")
+    provider = data.get("provider")
+    img      = data.get("img")
+
+    if not name or waffles is None or not provider or not img:
+        return flask.jsonify({"error": "Missing required fields: name, waffles, provider, img"}), 400
+    if not isinstance(waffles, int) or waffles < 0:
+        return flask.jsonify({"error": "waffles must be a non-negative integer"}), 400
+
+    async with aiosqlite.connect('database.db') as db:
+        cursor = await db.execute("SELECT id FROM Merch WHERE name = ?", (name,))
+        if await cursor.fetchone():
+            return flask.jsonify({"error": "Merch item with that name already exists"}), 409
+
+        await db.execute(
+            "INSERT INTO Merch (name, waffles, provider, img) VALUES (?, ?, ?, ?)",
+            (name, waffles, provider, img)
+        )
+        await db.commit()
+
+    return flask.jsonify({"message": "Merch registered successfully"}), 201
+
+
 @app.route("/acts/complete/<int:act_id>", methods=["POST"])
 async def complete_act(act_id):
     auth_header = flask.request.headers.get("Authorization", "")
@@ -204,36 +278,4 @@ async def complete_act(act_id):
 
     return flask.jsonify({"message": "Act marked as completed"})
 
-@app.route("/acts", methods=["GET"])
-async def list_acts():
-    auth_header = flask.request.headers.get("Authorization", "")
-    if not auth_header.startswith("Bearer "):
-        return flask.jsonify({"error": "Missing or invalid token"}), 401
 
-    token = auth_header.split(" ", 1)[1]
-    try:
-        payload = jwt.decode(token, app.secret_key, algorithms=["HS256"])
-    except jwt.ExpiredSignatureError:
-        return flask.jsonify({"error": "Token expired"}), 401
-    except jwt.InvalidTokenError:
-        return flask.jsonify({"error": "Invalid token"}), 401
-
-    user_id = payload["user_id"]
-
-    async with aiosqlite.connect('database.db') as db:
-        cursor = await db.execute("SELECT id, location, category, item, completed, claimedBy FROM Acts WHERE userId = ?", (user_id,))
-        acts = await cursor.fetchall()
-
-    acts_list = [
-        {
-            "id": act[0],
-            "location": act[1],
-            "category": act[2],
-            "item": act[3],
-            "completed": bool(act[4]),
-            "claimedBy": act[5]
-        }
-        for act in acts
-    ]
-
-    return flask.jsonify({"acts": acts_list})

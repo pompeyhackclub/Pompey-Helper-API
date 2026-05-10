@@ -1,4 +1,6 @@
 flask
+flask-cors
 argon2-cffi
 PyJWT
 aiosqlite
+'flask[async]'
