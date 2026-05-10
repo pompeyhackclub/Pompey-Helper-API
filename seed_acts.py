@@ -10,17 +10,17 @@ _SEED_USERS = [
 ]
 
 _SEED_ACTS = [
-    # (username,      location,                                    category,       item,                               completed, claimedByUsername)
-    ("wafflelord",  {"lat": "50.8013", "lng": "-1.1106"},         "Food",         "Share a waffle with a stranger",   False,  None),           # Historic Dockyard
-    ("wafflelord",  {"lat": "50.8477", "lng": "-1.0645"},         "Community",    "Pick up litter for 10 minutes",    True,   "syrup_queen"),   # Cosham
-    ("wafflelord",  {"lat": "50.8337", "lng": "-1.0725"},         "Sport",        "Teach someone to juggle",          False,  "gridmaster"),    # Hilsea
-    ("syrup_queen", {"lat": "50.8156", "lng": "-1.0756"},         "Food",         "Buy a coffee for the next person", True,   "gridmaster"),    # North End
-    ("syrup_queen", {"lat": "50.7793", "lng": "-1.0849"},         "Arts",         "Chalk a nice message on the path", False,  None),            # Southsea Castle
-    ("syrup_queen", {"lat": "50.8087", "lng": "-1.0806"},         "Community",    "Water the public flower beds",     False,  "wafflelord"),    # Buckland
-    ("gridmaster",  {"lat": "50.8145", "lng": "-1.0589"},         "Food",         "Hand out free waffle samples",     True,   "wafflelord"),    # Copnor
-    ("gridmaster",  {"lat": "50.8410", "lng": "-1.0456"},         "Fun",          "Give someone a go on your token",  False,  None),            # Drayton
-    ("gridmaster",  {"lat": "50.8456", "lng": "-1.0312"},         "Education",    "Read to a kid for 15 minutes",     False,  "syrup_queen"),   # Farlington
-    ("wafflelord",  {"lat": "50.7955", "lng": "-1.1016"},         "Environment",  "Build a bird feeder from scrap",   False,  None),            # Portsmouth Cathedral
+    # (username,       location,                                    category,       item,                               completed, claimedByUsername)
+    ("wafflelord2",  '{"lat": "50.8013", "lng": "-1.1106"}',         "Food",         "Share a waffle with a stranger",   False,  None),             # Historic Dockyard
+    ("wafflelord2",  '{"lat": "50.8477", "lng": "-1.0645"}',         "Community",    "Pick up litter for 10 minutes",    True,   "syrup_queen2"),   # Cosham
+    ("wafflelord2",  '{"lat": "50.8337", "lng": "-1.0725"}',         "Sport",        "Teach someone to juggle",          False,  "gridmaster2"),    # Hilsea
+    ("syrup_queen2", '{"lat": "50.8156", "lng": "-1.0756"}',         "Food",         "Buy a coffee for the next person", True,   "gridmaster2"),    # North End
+    ("syrup_queen2", '{"lat": "50.7793", "lng": "-1.0849"}',         "Arts",         "Chalk a nice message on the path", False,  None),             # Southsea Castle
+    ("syrup_queen2", '{"lat": "50.8087", "lng": "-1.0806"}',         "Community",    "Water the public flower beds",     False,  "wafflelord2"),    # Buckland
+    ("gridmaster2",  '{"lat": "50.8145", "lng": "-1.0589"}',         "Food",         "Hand out free waffle samples",     True,   "wafflelord2"),    # Copnor
+    ("gridmaster2",  '{"lat": "50.8410", "lng": "-1.0456"}',         "Fun",          "Give someone a go on your token",  False,  None),             # Drayton
+    ("gridmaster2",  '{"lat": "50.8456", "lng": "-1.0312"}',         "Education",    "Read to a kid for 15 minutes",     False,  "syrup_queen2"),   # Farlington
+    ("wafflelord2",  '{"lat": "50.7955", "lng": "-1.1016"}',         "Environment",  "Build a bird feeder from scrap",   False,  None),             # Portsmouth Cathedral
 ]
 
 async def seed():
